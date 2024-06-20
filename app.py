@@ -19,6 +19,7 @@ defect_names_map = {
 }
 
 
+
 def main():
     global model
     model = YOLO(MODEL_DIR)
@@ -61,6 +62,8 @@ def inference_images(uploaded_file):
     boxes = results[0].boxes
     plotted = results[0].plot()[:, :, ::-1]
 
+    defect_summary_str = ""  # Initialize defect_summary_str
+
     if len(boxes) == 0:
         st.markdown("**No Defects Detected**")
     else:
@@ -75,9 +78,6 @@ def inference_images(uploaded_file):
                 defect_summary[defect] = 1
 
         defect_summary_str = ', '.join([f"{name}: {count}" for name, count in defect_summary.items()])
-
-        st.markdown(f"**Total Defects Detected:** {defect_count}")
-        st.markdown(f"**Defect Summary:** {defect_summary_str}")
 
     # Display the image with detections
     st.image(plotted, caption="Detected Defects", width=600)
