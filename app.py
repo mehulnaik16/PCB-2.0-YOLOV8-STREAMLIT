@@ -1,5 +1,4 @@
 import os
-import logging
 import tempfile
 import cv2 as cv
 from PIL import Image
@@ -17,7 +16,6 @@ defect_names_map = {
     4: "Spur",
     5: "Supurious copper"
 }
-
 
 
 def main():
@@ -62,8 +60,6 @@ def inference_images(uploaded_file):
     boxes = results[0].boxes
     plotted = results[0].plot()[:, :, ::-1]
 
-    defect_summary_str = ""  # Initialize defect_summary_str
-
     if len(boxes) == 0:
         st.markdown("**No Defects Detected**")
     else:
@@ -79,9 +75,11 @@ def inference_images(uploaded_file):
 
         defect_summary_str = ', '.join([f"{name}: {count}" for name, count in defect_summary.items()])
 
+        st.markdown(f"**Total Defects Detected:** {defect_count}")
+        st.markdown(f"**Defect Summary:** {defect_summary_str}")
+
     # Display the image with detections
     st.image(plotted, caption="Detected Defects", width=600)
-    logging.info(f"Detected defects in uploaded image: {defect_summary_str}")
 
 def inference_video(uploaded_file):
     temp_file = tempfile.NamedTemporaryFile(delete=False)
@@ -122,7 +120,7 @@ def inference_video(uploaded_file):
 
                 defect_summary_str = ', '.join([f"{name}: {count}" for name, count in defect_summary.items()])
                 frame_placeholder.image(plotted, channels="BGR", caption=f"Video Frame - Detected Defects: {defect_summary_str}")
-                logging.info(f"Detected defects in video frame: {defect_summary_str}")
+                
 
             if stop_placeholder:
                 break
