@@ -18,12 +18,6 @@ defect_names_map = {
     5: "Supurious copper"
 }
 
-logging.basicConfig(
-    filename="./logs/log.log", 
-    filemode='a', 
-    level=logging.INFO, 
-    format='%(asctime)s:%(levelname)s:%(name)s:%(message)s'
-)
 
 def main():
     global model
